@@ -10,6 +10,7 @@ function ClientSecondForm({ isEdit, onDataChange, firstFormData }) {
       {
         createdDate: "",
         memberName: "",
+        policyName: "",
         documentNo: "",
         documentName: "",
         financialProducts: "",
@@ -84,36 +85,8 @@ function ClientSecondForm({ isEdit, onDataChange, firstFormData }) {
 
   const handleProposedPlanUpload = (urls) => handleUpload("proposedPlan", urls);
 
-  // useEffect(() => {
-  //   if (!firstFormData?.financialInfo?.insuranceInvestment) return;
 
-  //   const insuranceList = firstFormData.financialInfo.insuranceInvestment || [];
-
-  //   const docs = insuranceList.map(() =>
-  //     //added
-  //     ({
-  //       createdDate: "",
-  //       memberName: "",
-  //       documentNo: "",
-  //       documentName: "",
-  //       financialProducts: "",
-  //       remark: "",
-  //       upload: [],
-  //     })
-  //   );
-
-  //   const updatedFormData = {
-  //     ...formData,
-  //     financialInfo: {
-  //       ...formData.financialInfo,
-  //       ...firstFormData.financialInfo,
-  //     },
-  //     customerDoc: docs,
-  //   };
-
-  //   setFormData(updatedFormData);
-  //   onDataChange(updatedFormData);
-  // }, [firstFormData?.financialInfo?.insuranceInvestment]);
+ 
   useEffect(() => {
     if (!firstFormData?.financialInfo?.insuranceInvestment) return;
 
@@ -125,9 +98,16 @@ function ClientSecondForm({ isEdit, onDataChange, firstFormData }) {
           createdDate: "",
           memberName: "",
           documentNo: "",
+          planName:"",
+          sa:"",
+          mode:"",
+          insuCo:"",
+          premium:"",
+          doe:"",
+          dom:"",
           documentName: "",
           financialProducts: "",
-          remark: "",
+          // remark: "",
           upload: [],
         }
       );
@@ -188,7 +168,6 @@ function ClientSecondForm({ isEdit, onDataChange, firstFormData }) {
   return (
     <Container>
       <Form>
-        {/* KYC Document */}
 
         {firstFormData?.financialInfo?.insuranceInvestment?.map(
           (insurance, index) => (
@@ -197,7 +176,7 @@ function ClientSecondForm({ isEdit, onDataChange, firstFormData }) {
 
               <Col xs={12} md={6} lg={2}>
                 <Form.Group controlId={`createdDate-${index}`}>
-                  <Form.Label>Created Date</Form.Label>
+                  <Form.Label>Submission Date</Form.Label>
                   <Form.Control
                     type="date"
                     name="createdDate"
@@ -223,38 +202,128 @@ function ClientSecondForm({ isEdit, onDataChange, firstFormData }) {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col xs={12} md={6} lg={2}>
-                <Form.Group controlId={`documentName-${index}`}>
-                  <Form.Label>Document Name</Form.Label>
+                <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`insuCo-${index}`}>
+                  <Form.Label>Insu Co</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Document Name"
-                    name="documentName"
-                    value={formData.customerDoc[index]?.documentName || ""}
+                    placeholder="InsunCo"
+                    name="insu Co"
+                    value={formData.customerDoc[index]?.insuCo || ""}
                     onChange={(e) => handleCustomerDocChange(e, index)}
                   />
                 </Form.Group>
               </Col>
-              <Col xs={12} md={6} lg={2}>
-                <Form.Group controlId={`documentNo-${index}`}>
-                  <Form.Label>Document No</Form.Label>
+
+
+             <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`policyName-${index}`}>
+                  <Form.Label>Policy No</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Document No"
-                    name="documentNo"
-                    value={formData.customerDoc[index]?.documentNo || ""}
+                    placeholder="Policy Name"
+                    name="Policy Name"
+                    value={formData.customerDoc[index]?.policyName || ""}
                     onChange={(e) => handleCustomerDocChange(e, index)}
                   />
                 </Form.Group>
               </Col>
-              <Col xs={12} md={6} lg={2}>
-                <Form.Group controlId={`remark-${index}`}>
-                  <Form.Label>Remark</Form.Label>
+               <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`planName-${index}`}>
+                  <Form.Label>Plan Name</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Remark"
-                    name="remark"
-                    value={formData.customerDoc[index]?.remark || ""}
+                    placeholder="Plan Name"
+                    name="Plan Name"
+                    value={formData.customerDoc[index]?.planName || ""}
+                    onChange={(e) => handleCustomerDocChange(e, index)}
+                  />
+                </Form.Group>
+              </Col>
+
+            
+
+
+   {/* sa:"",
+          mode:"",
+          premium:"",
+          doe:"",
+          dom:"", */}
+
+
+                <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`sa-${index}`}>
+                  <Form.Label>SA</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Sa"
+                    name="Sa"
+                    value={formData.customerDoc[index]?.sa || ""}
+                    onChange={(e) => handleCustomerDocChange(e, index)}
+                  />
+                </Form.Group>
+              </Col>
+                <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`mode-${index}`}>
+                  <Form.Label>Mode</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="mode"
+                    name="mode"
+                    value={formData.customerDoc[index]?.mode || ""}
+                    onChange={(e) => handleCustomerDocChange(e, index)}
+                  />
+                </Form.Group>
+              </Col>
+
+
+                <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`premium-${index}`}>
+                  <Form.Label>Premium</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="premium"
+                    name="premium"
+                    value={formData.customerDoc[index]?.premium || ""}
+                    onChange={(e) => handleCustomerDocChange(e, index)}
+                  />
+                </Form.Group>
+              </Col>
+
+
+
+
+
+
+
+
+
+
+
+              <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`doe-${index}`}>
+                  <Form.Label>Doe</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Doe"
+                    name="Doe"
+                    value={formData.customerDoc[index]?.doe || ""}
+                    onChange={(e) => handleCustomerDocChange(e, index)}
+                  />
+                </Form.Group>
+              </Col>
+             
+
+
+
+              <Col xs={12} md={6} lg={2}>
+                <Form.Group controlId={`dom-${index}`}>
+                  <Form.Label>Dom</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Dom"
+                    name="Dom"
+                    value={formData.customerDoc[index]?.dom || ""}
                     onChange={(e) => handleCustomerDocChange(e, index)}
                   />
                 </Form.Group>
@@ -271,6 +340,8 @@ function ClientSecondForm({ isEdit, onDataChange, firstFormData }) {
             </Row>
           )
         )}
+
+
 
         {/* Proposed Plan */}
         <h5 className="mt-4">Proposed Financial Plan</h5>

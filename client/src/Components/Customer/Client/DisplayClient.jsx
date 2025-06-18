@@ -6,6 +6,8 @@ import {
   getAllFullClients,
   updateClientLeadStatus,
 } from "../../../redux/feature/ClientRedux/ClientThunx";
+import { Link, useNavigate } from "react-router-dom";
+
 
 function DisplayClient({ setActiveTab, setEditId }) {
   const dispatch = useDispatch();
@@ -24,10 +26,18 @@ function DisplayClient({ setActiveTab, setEditId }) {
     setActiveTab("add");
   };
 
+  const navigate = useNavigate();
+
+
   // const handleConvert = (id) => {
   //   // Implement your convert logic here
   //   console.log("Convert client with ID:", id);
   // };
+
+  const handleView = (client) => {
+  navigate("/customer-detail", { state: { client } });
+};
+
 
   if (loading)
     return (
@@ -86,7 +96,7 @@ function DisplayClient({ setActiveTab, setEditId }) {
                 <td>{address}</td>
                 <td>{city}</td>
                 {/* <td>{group}</td> */}
-                <td>
+                <td   >
                   <Button
                     variant="warning"
                     size="sm"
@@ -99,11 +109,21 @@ function DisplayClient({ setActiveTab, setEditId }) {
                     variant="danger"
                     size="sm"
                     onClick={() => handleDelete(client._id)}
+                    className="me-2"
                   >
                     Delete
                   </Button>
+                  <Button
+  variant="success"
+  size="sm"
+  onClick={() => handleView(client)}
+>
+  View
+</Button>
+                 
+               
                 </td>
-                <td>
+                <td> 
                   <Button
                     variant="success"
                     size="sm"
