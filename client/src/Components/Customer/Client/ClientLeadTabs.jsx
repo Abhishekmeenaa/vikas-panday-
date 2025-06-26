@@ -7,7 +7,7 @@ const ClientLeadTabs = () => {
   const [editId, setEditId] = useState(""); // 👈 Track which lead is being edited
   console.log(editId, "id client tab");
   return (
-    <div className="container p-4 mt-4">
+    <div className=" p-4 mt-4">
       {/* Tab Buttons */}
       <div className="d-flex mb-3">
         <button
@@ -26,8 +26,8 @@ const ClientLeadTabs = () => {
             activeTab === "display" ? "primary" : "outline-primary"
           }`}
           onClick={() => setActiveTab("display")}
-        >financialInfo
-          Display Client Leads
+        >
+           Client Leads
         </button>
       </div>
 

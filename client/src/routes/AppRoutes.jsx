@@ -57,7 +57,7 @@ const AppRoutes = () => {
         {/* <Route path="/add-suspect-lead" element={<AddSuspect />} /> */}
         {/* <Route path="/display-suspect-lead" element={<SuspectLeadsTable />} /> */}
         <Route path="/add-suspect-lead" element={<SuspectLeadTabs />} />
-        <Route path="/customer-detail" element={<CustomerDetail />} />
+        <Route path="/customer-detail/:id" element={<CustomerDetail />} />
         <Route path="/client" element={<ClientLeadTabs />} />
         <Route path="/add-client" element={<AddClient />} />
         <Route path="/kyc" element={<KYCtabs />} />

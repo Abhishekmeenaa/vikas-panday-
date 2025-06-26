@@ -1,29 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { FiUser, FiPhone, FiMail, FiMapPin, FiPlus, FiTrash2, FiDownload, FiUpload } from 'react-icons/fi';
 import { FaBusinessTime, FaIdCardAlt, FaUsers, FaHeartbeat, FaMoneyBillWave, FaTasks, FaBullseye } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchByidCompleteForm } from '../../redux/feature/ClientRedux/ClientThunx';
 
 const CustomerDetail = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [checklists, setChecklists] = useState([{ name: '', file: null }]);
   const [textChecklists, setTextChecklists] = useState(['']);
+  const [userData, setUserData] = useState(null);
+  const { id } = useParams()
+
+  const  user = useSelector((state)=> state.client)
+  console.log("user" ,user);
+  
+
+// Userdataconst  
+
+  console.log(id);
+
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const init = async () => {
+      const res = await dispatch(fetchByidCompleteForm(id)).unwrap();
+      console.log("client", res);
+      // console.log(res, "DATAAA") 
+      // console.log( "data", user);
+      setUserData(res)
+      console.log("newDate", res.client);
+      
+
+      
+      
+
+    }
+    init();
+  }, [])
+
+
+
+
+
+
+
 
   // Sample user data
-  const userData = {
-    name: "Mr.Abhishek",
-    groupCode: "464226",
-    grade: "Grade A",
-    occupation: "Busines (CA)",
-    phone: "9399092540",
-    email: "abhishekmeena@gmail.com",
-    currentAddress: "Sajida Nagar Karbala Road Bhopal 462001",
-    permanentAddress: "Sajida Nagar Karbala Road Bhopal 462001",
-    image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    joinDate: "15 Jan 2020",
-    lastContact: "2 days ago",
-    status: "Active",
-    reference: "Mr. Sharma (ID: REF1002)"
-  };
+  // const userData = {
+  //   name: "Mr.Abhishek",
+  //   groupCode: "464226",
+  //   grade: "Grade A",
+  //   occupation: "Busines (CA)",
+  //   phone: "9399092540",
+  //   email: "abhishekmeena@gmail.com",
+  //   currentAddress: "Sajida Nagar Karbala Road Bhopal 462001",
+  //   permanentAddress: "Sajida Nagar Karbala Road Bhopal 462001",
+  //   image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //   joinDate: "15 Jan 2020",
+  //   lastContact: "2 days ago",
+  //   status: "Active",
+  //   reference: "Mr. Sharma (ID: REF1002)"
+  // };
 
   // Add new checklist item
   const addChecklist = () => {
@@ -64,7 +104,12 @@ const CustomerDetail = () => {
   };
 
   return (
-    <div className=" container customer-profile-container">
+    <>
+    {!userData ? (
+      <h1>loading</h1>
+
+    ):(
+ <div className=" container customer-profile-container">
       {/* Header Section */}
       <div className="profile-header">
         <h1>Customer Profile</h1>
@@ -92,7 +137,7 @@ const CustomerDetail = () => {
           <div className="profile-info">
             <h2 className="profile-name">{userData.name}</h2>
             <div className="profile-meta">
-              <span className="badge">{userData.groupCode}</span>
+              <span className="badge text-bg-danger">{userData?.client?.personalDetails?.groupCode}</span>
               <span className="badge secondary">{userData.grade}</span>
             </div>
 
@@ -101,28 +146,39 @@ const CustomerDetail = () => {
                 <FiUser className="detail-icon" />
                 <div>
                   <p className="detail-label">Occupation</p>
-                  <p className="detail-value">{userData.occupation}</p>
+                  <p className="detail-value  text-bg-danger">{userData?.personalDetails?.occupation}</p>
                 </div>
-              </div>
+                {console.log( "occupation", userData )
+                }
+              </div>  
               <div className="detail-item">
                 <FiPhone className="detail-icon" />
                 <div>
                   <p className="detail-label">Phone</p>
-                  <p className="detail-value">{userData.phone}</p>
+                  <p className="detail-value">{userData?.personalDetails?.mobileNo}</p>
                 </div>
               </div>
               <div className="detail-item">
                 <FiMail className="detail-icon" />
                 <div>
                   <p className="detail-label">Email</p>
-                  <p className="detail-value">{userData.email}</p>
+                  <p className="detail-value">{userData?.personalDetails?.emailId}</p>
+                </div>
+              </div>
+               <div className="detail-item">
+                <FiMail className="detail-icon" />
+                <div>
+                  <p className="detail-label">Status</p>
+                  <p className="detail-value">{userData?.personalDetails?.status}</p>
                 </div>
               </div>
               <div className="detail-item">
                 <FiMapPin className="detail-icon" />
                 <div>
                   <p className="detail-label">Location</p>
-                  <p className="detail-value">Bhopal, India</p>
+                  <p className="detail-value">{userData?.personalDetails?.
+preferredMeetingArea
+}</p>
                 </div>
               </div>
             </div>
@@ -213,6 +269,7 @@ const CustomerDetail = () => {
 
               {/* Tab Panels */}
               <TabPanel>
+
                 <div className="tab-content">
                   <h3>Referral Information</h3>
                   <div className="referral-form">
@@ -249,56 +306,132 @@ const CustomerDetail = () => {
                 </div>
               </TabPanel>
 
-              <TabPanel>
-                <div className="tab-content">
-                  <h3>Personal Documents</h3>
-                  <div className="document-form">
-                    {checklists.map((item, index) => (
-                      <div key={index} className="document-item">
-                        <div className="form-group">
-                          <label>Document Name</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            value={item.name}
-                            onChange={(e) => handleChecklistChange(index, e)}
-                            placeholder="e.g. Aadhar Card, Passport"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Upload Document</label>
-                          <div className="file-upload">
-                            <label className="btn-outline">
-                              <FiUpload className="icon-left" />
-                              Choose File
-                              <input
-                                type="file"
-                                onChange={(e) => handleFileChange(index, e)}
-                                hidden
-                              />
-                            </label>
-                            <span className="file-name">
-                              {item.file ? item.file.name : 'No file chosen'}
-                            </span>
-                          </div>
-                        </div>
-                        {index > 0 && (
-                          <button
-                            className="btn-danger remove-btn"
-                            onClick={() => removeChecklist(index)}
-                          >
-                            <FiTrash2 />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                    <button className="btn-secondary" onClick={addChecklist}>
-                      <FiPlus /> Add Document
-                    </button>
+        <TabPanel>
+  <div className="profile-details-container p-4">
+    <div className="row g-4">
+      {/* Left Column */}
+      <div className="col-md-6">
+        <div className="card shadow-sm h-100">
+          <div className="card-body">
+            <h5 className="card-title text-primary mb-4 border-bottom pb-2">
+              <FiUser className="me-2" />
+              Basic Information
+            </h5>
+            
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">Group Code:</span>
+                <span className="fw-semibold">{userData?.personalDetails?.groupCode}</span>
+              </div>
+            </div>
+
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">Group Head:</span>
+                <span className="fw-semibold">{userData?.personalDetails?.groupName}</span>
+              </div>
+            </div>
+
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">WhatsApp:</span>
+                <span className="fw-semibold">{userData?.personalDetails?.whatsappNo}</span>
+              </div>
+            </div>
+
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">Email:</span>
+                <span className="fw-semibold text-break">{userData?.personalDetails?.emailId}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column */}
+      <div className="col-md-6">
+        <div className="card shadow-sm h-100">
+          <div className="card-body">
+            <h5 className="card-title text-primary mb-4 border-bottom pb-2">
+              <FiUser className="me-2" />
+              Contact Details
+            </h5>
+            
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">PA Name:</span>
+                <span className="fw-semibold">{userData?.personalDetails?.paName}</span>
+              </div>
+            </div>
+
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">PA Mobile:</span>
+                <span className="fw-semibold">{userData?.personalDetails?.paMobileNo}</span>
+              </div>
+            </div>
+
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">Meeting Address:</span>
+                <span className="fw-semibold">{userData?.personalDetails?.preferredMeetingAddr}</span>
+              </div>
+            </div>
+
+            <div className="detail-item d-flex align-items-center mb-3">
+              <div className="d-flex flex-grow-1">
+                <span className="text-muted me-2">Best Time:</span>
+                <span className="fw-semibold">{userData?.personalDetails?.bestTime}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Full Width Card */}
+      <div className="col-12">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h5 className="card-title text-primary mb-4 border-bottom pb-2">
+              <FiUser className="me-2" />
+              Additional Information
+            </h5>
+            
+            <div className="row">
+              <div className="col-md-4">
+                <div className="detail-item d-flex align-items-center mb-3">
+                  <div className="d-flex flex-grow-1">
+                    <span className="text-muted me-2">Purpose:</span>
+                    <span className="fw-semibold">{userData?.personalDetails?.callingPurpose}</span>
                   </div>
                 </div>
-              </TabPanel>
-
+              </div>
+              
+              <div className="col-md-4">
+                <div className="detail-item d-flex align-items-center mb-3">
+                  <div className="d-flex flex-grow-1">
+                    <span className="text-muted me-2">Select Name:</span>
+                    <span className="fw-semibold">{userData?.personalDetails?.name}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="col-md-4">
+                <div className="detail-item d-flex align-items-center mb-3">
+                  <div className="d-flex flex-grow-1">
+                    <span className="text-muted me-2">CRE Name:</span>
+                    <span className="fw-semibold">{userData?.personalDetails?.allocatedCRE}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</TabPanel>
               <TabPanel>
                 <div className="tab-content">
                   <h3>Family Members</h3>
@@ -1190,6 +1323,14 @@ const CustomerDetail = () => {
         }
       `}</style>
     </div>
+
+    )
+
+    }
+
+   
+    </>
+
   );
 };
 
