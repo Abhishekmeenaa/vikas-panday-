@@ -102,6 +102,17 @@ const CustomerDetail = () => {
     newChecklists[index] = e.target.value;
     setTextChecklists(newChecklists);
   };
+  const calculateAge = (dob) => {
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
 
   return (
     <>
@@ -140,13 +151,20 @@ const CustomerDetail = () => {
               <span className="badge text-bg-danger">{userData?.client?.personalDetails?.groupCode}</span>
               <span className="badge secondary">{userData.grade}</span>
             </div>
+            <div className="detail-item">
+                <FiPhone className="detail-icon" />
+                <div>
+                  <p className="detail-label">Name</p>
+                  <p className="detail-value">{userData?.personalDetails?.groupName}</p>
+                </div>
+              </div>
 
             <div className="profile-details">
               <div className="detail-item">
                 <FiUser className="detail-icon" />
                 <div>
                   <p className="detail-label">Occupation</p>
-                  <p className="detail-value  text-bg-danger">{userData?.personalDetails?.occupation}</p>
+                  <p className="detail-value ">{userData?.personalDetails?.organisation}</p>
                 </div>
                 {console.log( "occupation", userData )
                 }
@@ -172,7 +190,7 @@ const CustomerDetail = () => {
                   <p className="detail-value">{userData?.personalDetails?.status}</p>
                 </div>
               </div>
-              <div className="detail-item">
+              {/* <div className="detail-item">
                 <FiMapPin className="detail-icon" />
                 <div>
                   <p className="detail-label">Location</p>
@@ -180,14 +198,14 @@ const CustomerDetail = () => {
 preferredMeetingArea
 }</p>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className="profile-stats">
               <div className="stat-item">
                 <p className="stat-value">3</p>
                 <p className="stat-label">Family Members</p>
-              </div>
+              </div> 
               <div className="stat-item">
                 <p className="stat-value">5</p>
                 <p className="stat-label">Active Policies</p>
@@ -237,38 +255,43 @@ preferredMeetingArea
           <div className="tabs-container">
             <Tabs selectedIndex={tabIndex} onSelect={index => setTabIndex(index)}>
               <TabList className="custom-tablist">
-                <Tab className={`custom-tab ${tabIndex === 0 ? 'active' : ''}`}>
+                {/* <Tab className={`custom-tab ${tabIndex === 0 ? 'active' : ''}`}>
                   <FaIdCardAlt className="tab-icon" />
                   <span>Referred By</span>
-                </Tab>
-                <Tab className={`custom-tab ${tabIndex === 1 ? 'active' : ''}`}>
+                </Tab> */}
+                <Tab className={`custom-tab ${tabIndex === 0 ? 'active' : ''}`}>
                   <FiUser className="tab-icon" />
                   <span>Personal Details</span>
                 </Tab>
-                <Tab className={`custom-tab ${tabIndex === 2 ? 'active' : ''}`}>
+                <Tab className={`custom-tab ${tabIndex === 1 ? 'active' : ''}`}>
                   <FaUsers className="tab-icon" />
                   <span>Family Members</span>
                 </Tab>
-                <Tab className={`custom-tab ${tabIndex === 3 ? 'active' : ''}`}>
+                {/* <Tab className={`custom-tab ${tabIndex === 2 ? 'active' : ''}`}>
                   <FaHeartbeat className="tab-icon" />
                   <span>Health History</span>
-                </Tab>
-                <Tab className={`custom-tab ${tabIndex === 4 ? 'active' : ''}`}>
+                </Tab> */}
+                <Tab className={`custom-tab ${tabIndex === 2 ? 'active' : ''}`}>
                   <FaMoneyBillWave className="tab-icon" />
                   <span>Financial Details</span>
+                </Tab>
+               
+                <Tab className={`custom-tab ${tabIndex === 3 ? 'active' : ''}`}>
+                  <FaBullseye className="tab-icon" />
+                  <span>Future Priorities</span>
+                </Tab>
+                  <Tab className={`custom-tab ${tabIndex === 4 ? 'active' : ''}`}>
+                  <FaBullseye className="tab-icon" />
+                  <span>Proposal Financial Plan"</span>
                 </Tab>
                 <Tab className={`custom-tab ${tabIndex === 5 ? 'active' : ''}`}>
                   <FaTasks className="tab-icon" />
                   <span>Task Details</span>
                 </Tab>
-                <Tab className={`custom-tab ${tabIndex === 6 ? 'active' : ''}`}>
-                  <FaBullseye className="tab-icon" />
-                  <span>Future Priorities</span>
-                </Tab>
               </TabList>
 
               {/* Tab Panels */}
-              <TabPanel>
+              {/* <TabPanel>
 
                 <div className="tab-content">
                   <h3>Referral Information</h3>
@@ -304,90 +327,101 @@ preferredMeetingArea
                     </button>
                   </div>
                 </div>
-              </TabPanel>
+              </TabPanel> */}
 
         <TabPanel>
   <div className="profile-details-container p-4">
     <div className="row g-4">
       {/* Left Column */}
-      <div className="col-md-6">
-        <div className="card shadow-sm h-100">
-          <div className="card-body">
-            <h5 className="card-title text-primary mb-4 border-bottom pb-2">
-              <FiUser className="me-2" />
-              Basic Information
-            </h5>
-            
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">Group Code:</span>
-                <span className="fw-semibold">{userData?.personalDetails?.groupCode}</span>
-              </div>
+      <div className="col-md-12">
+  <div className="card shadow-sm h-100">
+    <div className="card-body">
+      <h5 className="card-title text-primary mb-4 border-bottom pb-2">
+        <FiUser className="me-2" />
+        Basic Information
+      </h5>
+      
+      <div className="row">
+        {/* First Row - 2 items in one line */}
+        <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">Group Code:</span>
+              <span className="fw-semibold">{userData?.personalDetails?.groupCode}</span>
             </div>
-
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">Group Head:</span>
-                <span className="fw-semibold">{userData?.personalDetails?.groupName}</span>
-              </div>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">Group Head:</span>
+              <span className="fw-semibold">{userData?.personalDetails?.groupName}</span>
             </div>
+          </div>
+        </div>
 
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">WhatsApp:</span>
-                <span className="fw-semibold">{userData?.personalDetails?.whatsappNo}</span>
-              </div>
+        {/* Second Row - 2 items in one line */}
+        <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">WhatsApp:</span>
+              <span className="fw-semibold">{userData?.personalDetails?.whatsappNo}</span>
             </div>
+          </div>
+        </div>
+          <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">PA Name:</span>
+              <span className="fw-semibold">{userData?.personalDetails?.paName}</span>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">Area:</span>
+              <span className="fw-semibold text-break">{userData?.personalDetails?.preferredMeetingArea}</span>
+            </div>
+          </div>
+        </div>
 
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">Email:</span>
-                <span className="fw-semibold text-break">{userData?.personalDetails?.emailId}</span>
-              </div>
+        {/* Third Row - 2 items in one line */}
+      
+        <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">PA Mobile:</span>
+              <span className="fw-semibold">{userData?.personalDetails?.paMobileNo}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Full width items */}
+        <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">Meeting Address:</span>
+              <span className="fw-semibold">{userData?.personalDetails?.preferredMeetingAddr}</span>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="detail-item d-flex align-items-center mb-3">
+            <div className="d-flex flex-grow-1">
+              <span className="text-muted me-2">Best Time:</span>
+              <span className="fw-semibold">{userData?.personalDetails?.bestTime}</span>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+      
 
-      {/* Right Column */}
-      <div className="col-md-6">
-        <div className="card shadow-sm h-100">
-          <div className="card-body">
-            <h5 className="card-title text-primary mb-4 border-bottom pb-2">
-              <FiUser className="me-2" />
-              Contact Details
-            </h5>
-            
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">PA Name:</span>
-                <span className="fw-semibold">{userData?.personalDetails?.paName}</span>
-              </div>
-            </div>
-
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">PA Mobile:</span>
-                <span className="fw-semibold">{userData?.personalDetails?.paMobileNo}</span>
-              </div>
-            </div>
-
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">Meeting Address:</span>
-                <span className="fw-semibold">{userData?.personalDetails?.preferredMeetingAddr}</span>
-              </div>
-            </div>
-
-            <div className="detail-item d-flex align-items-center mb-3">
-              <div className="d-flex flex-grow-1">
-                <span className="text-muted me-2">Best Time:</span>
-                <span className="fw-semibold">{userData?.personalDetails?.bestTime}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    
+      
 
       {/* Bottom Full Width Card */}
       <div className="col-12">
@@ -432,44 +466,53 @@ preferredMeetingArea
     </div>
   </div>
 </TabPanel>
-              <TabPanel>
-                <div className="tab-content">
-                  <h3>Family Members</h3>
-                  <div className="family-grid">
-                    {/* Sample family member cards */}
-                    <div className="family-card">
-                      <div className="family-avatar">S</div>
-                      <div className="family-info">
-                        <h4>Mrs. Salma Khan</h4>
-                        <p>Wife • 42 years</p>
-                        <span className="badge">Dependent</span>
-                      </div>
-                    </div>
-                    <div className="family-card">
-                      <div className="family-avatar">A</div>
-                      <div className="family-info">
-                        <h4>Arif Khan</h4>
-                        <p>Son • 18 years</p>
-                        <span className="badge">Student</span>
-                      </div>
-                    </div>
-                    <div className="family-card">
-                      <div className="family-avatar">F</div>
-                      <div className="family-info">
-                        <h4>Fatima Khan</h4>
-                        <p>Daughter • 15 years</p>
-                        <span className="badge">Student</span>
-                      </div>
-                    </div>
-                    <button className="add-family-btn">
-                      <FiPlus size={24} />
-                      Add Family Member
-                    </button>
-                  </div>
-                </div>
-              </TabPanel>
 
-              <TabPanel>
+{/* fmily membwr */}
+       <TabPanel>
+  <div className="tab-content">
+    <h3>Family Members</h3>
+  <div className="family-grid">
+
+  {/* Other Members */}
+  {userData?.familyMembers?.filter(member => member?.relation?.toLowerCase() !== 'self')
+    .map((member, index) => (
+      <div className="family-card" key={`member-${index}`}>
+        <div className="family-avatar">
+          {member?.name?.charAt(0) || 'N'}
+        </div>
+        <div className="family-info">
+          <h3 className="mb-2 fw-semibold">{member?.name}</h3>
+
+          <p><strong>Relation:</strong> {member?.relation}</p>
+
+          <p>
+            <strong>Age:</strong> {member?.dobActual ? `${calculateAge(member.dobActual)} years` : 'N/A'}
+          </p>
+
+          <p>
+            <strong>Annual Income:</strong> {member?.annualIncome || 'N/A'}
+          </p>
+
+          <span className="badge bg-info text-dark">
+            {member?.occupation || 'Dependent'}
+          </span>
+        </div>
+      </div>
+  ))}
+
+  {/* Add Button */}
+  <button className="add-family-btn">
+    <FiPlus size={24} />
+    Add Family Member
+  </button>
+
+</div>
+
+  </div>
+</TabPanel>
+      
+
+              {/* <TabPanel>
                 <div className="tab-content">
                   <h3>Health Records</h3>
                   <div className="health-timeline">
@@ -500,7 +543,7 @@ preferredMeetingArea
                     </button>
                   </div>
                 </div>
-              </TabPanel>
+              </TabPanel> */}
 
               <TabPanel>
                 <div className="tab-content">
@@ -532,7 +575,49 @@ preferredMeetingArea
                   </div>
                 </div>
               </TabPanel>
+<TabPanel>
+   <h1>"Future Priorities"</h1>
+</TabPanel>
 
+<TabPanel>
+                <div className="tab-content">
+                  <h3>Future Goals & Priorities</h3>
+                  <div className="priority-cards">
+                    <div className="priority-card">
+                      <div className="priority-icon">
+                        <FaBusinessTime size={20} />
+                      </div>
+                      <div>
+                        <h4>Retirement Planning</h4>
+                        <p>Target: ₹50,00,000 by 2040</p>
+                        <div className="progress-bar">
+                          <div className="progress" style={{ width: '35%' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="priority-card">
+                      <div className="priority-icon">
+                        <FaUsers size={20} />
+                      </div>
+                      <div>
+                        <h4>Children's Education</h4>
+                        <p>Target: ₹25,00,000 by 2030</p>
+                        <div className="progress-bar">
+                          <div className="progress" style={{ width: '15%' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Additional Notes on Future Plans</label>
+                    <textarea
+                      className="form-control"
+                      placeholder="Enter any future goals or priorities..."
+                      rows="4"
+                    ></textarea>
+                  </div>
+                </div>
+              </TabPanel>
               <TabPanel>
                 <div className="tab-content">
                   <h3>Tasks & Follow-ups</h3>
@@ -587,45 +672,7 @@ preferredMeetingArea
                 </div>
               </TabPanel>
 
-              <TabPanel>
-                <div className="tab-content">
-                  <h3>Future Goals & Priorities</h3>
-                  <div className="priority-cards">
-                    <div className="priority-card">
-                      <div className="priority-icon">
-                        <FaBusinessTime size={20} />
-                      </div>
-                      <div>
-                        <h4>Retirement Planning</h4>
-                        <p>Target: ₹50,00,000 by 2040</p>
-                        <div className="progress-bar">
-                          <div className="progress" style={{ width: '35%' }}></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="priority-card">
-                      <div className="priority-icon">
-                        <FaUsers size={20} />
-                      </div>
-                      <div>
-                        <h4>Children's Education</h4>
-                        <p>Target: ₹25,00,000 by 2030</p>
-                        <div className="progress-bar">
-                          <div className="progress" style={{ width: '15%' }}></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label>Additional Notes on Future Plans</label>
-                    <textarea
-                      className="form-control"
-                      placeholder="Enter any future goals or priorities..."
-                      rows="4"
-                    ></textarea>
-                  </div>
-                </div>
-              </TabPanel>
+              
             </Tabs>
           </div>
         </div>
